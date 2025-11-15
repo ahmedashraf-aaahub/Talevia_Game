@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لعبة Talevia الصحية الذكية للأطفال</title>
+  <style>
+    * {box-sizing:border-box;}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding:0;
+      background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+      color: #FF9740;
+      direction: rtl;
+      min-height:100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #FF9740 0%, #fd7c00 100%);
+      color: #fff;
+      padding: 18px;
+      font-size: 1.8em;
+      text-align: center;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 12px rgba(255,151,64,0.3);
+      position: relative;
+    }
+    .logo {
+      display: block;
+      margin: 15px auto 6px auto;
+      max-width: 100px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.2);
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+    @keyframes logoFloat {
+      0%, 100% {transform: translateY(0px);}
+      50% {transform: translateY(-8px);}
+    }
+    main {
+      background: #1A1A1A;
+      border-radius: 20px;
+      max-width: 520px;
+      margin: 22px auto;
+      box-shadow: 0 10px 40px rgba(255,151,64,0.15);
+      padding: 26px 20px;
+      position: relative;
+      min-height: 700px;
+    }
+    h2,h3,h4 {color: #FF9740; text-shadow: 0 2px 4px rgba(0,0,0,0.3);}
+    .btn {
+      background: linear-gradient(135deg, #FF9740 0%, #fd7c00 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-size: 1.05em;
+      cursor: pointer;
+      margin:10px 4px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(255,151,64,0.4);
+      transition: all .3s ease;
+      text-align: center;
+      min-width:90px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255,151,64,0.6);
+    }
+    .btn:active {
+      transform: translateY(0px);
+    }
+    .input-area label {color:#fff;font-weight:600; display:block; margin-top:12px;}
+    .input-area input, .input-area select {
+      width: 96%; max-width:360px; padding: 10px;
+      margin-top:8px;margin-bottom:14px;
+      border-radius: 10px; border: 2px solid #FF9740;
+      background: #222; color: #FF9740;
+      font-size: 1em; outline:none;
+      transition: all .3s;
+    }
+    .input-area input:focus, .input-area select:focus {
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(255,151,64,0.5);
+    }
+    .input-area select {color:#FD7C00;}
+    .input-area input[type=file] {color: #fff;}
+    .error {color:#ff6b6b;font-weight:600;margin:12px 0; animation: shake 0.5s;}
+    @keyframes shake {
+      0%, 100% {transform: translateX(0);}
+      25% {transform: translateX(-10px);}
+      75% {transform: translateX(10px);}
+    }
+    .success {color:#51cf66;font-weight:600;margin:12px 0;}
+    .hidden {display:none !important;}
+    #adminBtn {
+      position: absolute; left:12px; top:10px;
+      font-size:0.85em; background:#222;
+      color:#FF9740;border:2px solid #FF9740; z-index:10;
+      border-radius:8px; padding:8px 14px; 
+      box-shadow: 0 2px 8px rgba(255,151,64,0.4);
+      cursor:pointer; font-weight:700;
+      transition: all .3s;
+    }
+    #adminBtn:hover {background:#FF9740;color:#fff;}
+    .threeD-bot {
+      margin: 16px auto;
+      width: 95px; height: 95px; border-radius:50%;
+      background: linear-gradient(135deg,#FF9740 0%, #fd7c00 100%);
+      box-shadow:0 0 25px rgba(255,151,64,0.6), 0 0 40px rgba(255,151,64,0.3);
+      position:relative; display:flex;align-items:center;justify-content:center;
+      animation: botFloat 2.8s ease-in-out infinite;
+      border: 3px solid #fff;
+    }
+    @keyframes botFloat {
+      0%, 100%{transform: translateY(0px) rotate(0deg);}
+      50%{transform: translateY(-12px) rotate(5deg);}
+    }
+    .threeD-face {
+      font-size: 48px; 
+      text-shadow:0 3px 8px rgba(0,0,0,0.4);
+      user-select:none;
+      animation: faceChange 4s ease-in-out infinite;
+    }
+    @keyframes faceChange {
+      0%, 100% {transform: scale(1);}
+      50% {transform: scale(1.1);}
+    }
+    #botSay {
+      margin:12px 0; font-size:1.16em; min-height:35px;
+      text-align:center; color:#fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      padding:8px;
+      background: rgba(255,151,64,0.1);
+      border-radius:10px;
+    }
+    #user-photo {margin:14px auto;max-width:110px;border-radius:50%; 
+      box-shadow:0 4px 15px rgba(255,151,64,0.5);
+      border:3px solid #FF9740;}
+    .nav-icons {
+      display:flex; justify-content:space-around; 
+      margin:24px 0; flex-wrap:wrap;
+    }
+    .icon-btn {
+      width: 72px; height: 72px; border-radius: 50%;
+      font-size: 32px; 
+      background: linear-gradient(135deg, #FF9740 0%, #fd7c00 100%);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      margin:6px; cursor:pointer; font-weight:900; 
+      box-shadow:0 4px 12px rgba(255,151,64,0.4);
+      transition:all .3s;
+      border:3px solid #fff;
+      position:relative;
+    }
+    .icon-btn:hover {
+      transform: scale(1.15) rotate(5deg);
+      box-shadow:0 6px 20px rgba(255,151,64,0.7);
+    }
+    .icon-btn:active {
+      transform: scale(0.95);
+    }
+    .progress-bar-container {
+      background: #222; margin:18px 0;
+      border-radius: 20px; height:28px;
+      border:2px solid #FF9740;
+      overflow:hidden;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg,#FF9740 0%, #fff 50%, #FF9740 100%);
+      height: 100%; width: 0; 
+      color: #111; font-weight: bold;
+      text-align: center; font-size:1em; 
+      transition:width 0.6s ease;
+      line-height:28px;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+    }
+    #report-section {
+      margin-top:18px; padding:16px; 
+      background:rgba(255,151,64,0.1);
+      border-radius:12px;
+      border:2px solid #FF9740;
+    }
+    #weekly-report {color:#fff; line-height:1.6;}
+    #logout-btn {
+      background:#222;color:#FF9740; 
+      border:2px solid #FF9740;
+    }
+    #logout-btn:hover{
+      background:#FF9740;color:#fff;
+    }
+    .reqBox {
+      margin:12px 0; padding:12px; 
+      background:rgba(255,151,64,0.15);
+      color:#fff; border-radius:10px;
+      border:2px solid #FF9740;
+    }
+    .adm-panel {margin-top:20px;text-align:center;}
+    .adm-list {
+      margin:16px 0; padding:10px;
+      background:#222; border-radius:10px;
+      border:2px solid #FF9740;
+    }
+    .adm-list-item {
+      border-bottom:1px solid #333; 
+      padding:10px; color:#fff;
+    }
+    .adm-list-item:last-child{border:none;}
+    .adm-child-data {
+      background:rgba(255,151,64,0.2);
+      padding:12px; border-radius:12px;
+      margin:8px 0; color:#fff;
+      border:2px solid #FF9740;
+    }
+    .back-btn {
+      background:#fff;color:#111;
+      font-weight:700;
+    }
+    .back-btn:hover{
+      background:#FF9740; color:#fff;
+    }
+    .req-actions button {margin:4px;}
+    .adm-user-label {
+      font-weight:700; color:#FF9740;
+      cursor:pointer;
+    }
+    .adm-remove-btn {
+      background:#e74c3c;color:white;
+    }
+    .adm-view-btn {
+      background:#3498db;color:white;
+    }
+    .adm-list-actions {margin-top:8px;}
+    .center {text-align:center;}
+    
+    /* صفحات الأنشطة */
+    .activity-page {
+      animation: slideIn 0.4s ease;
+    }
+    @keyframes slideIn {
+      from {opacity:0; transform: translateX(-20px);}
+      to {opacity:1; transform: translateX(0);}
+    }
+    .activity-header {
+      background: linear-gradient(135deg, #FF9740 0%, #fd7c00 100%);
+      padding:14px;
+      border-radius:12px;
+      color:#fff;
+      margin-bottom:16px;
+      text-align:center;
+      box-shadow: 0 4px 12px rgba(255,151,64,0.4);
+    }
+    .meal-option, .water-cup, .exercise-card, .mood-card, .sleep-tracker {
+      background: rgba(255,151,64,0.1);
+      border: 2px solid #FF9740;
+      border-radius:12px;
+      padding:14px;
+      margin:12px 0;
+      cursor:pointer;
+      transition: all .3s;
+      color:#fff;
+    }
+    .meal-option:hover, .exercise-card:hover, .mood-card:hover {
+      background: rgba(255,151,64,0.25);
+      transform: translateX(-5px);
+      box-shadow: 0 4px 12px rgba(255,151,64,0.5);
+    }
+    .meal-option.completed, .water-cup.filled, .exercise-card.completed {
+      background: rgba(81,207,102,0.3);
+      border-color: #51cf66;
+    }
+    .water-cup {
+      width:50px; height:60px;
+      display:inline-block;
+      margin:8px;
+      border-radius:8px;
+      background: rgba(255,255,255,0.1);
+      border:2px solid #3498db;
+      cursor:pointer;
+      transition: all .3s;
+      position:relative;
+    }
+    .water-cup.filled {
+      background: linear-gradient(180deg, #3498db 0%, #2980b9 100%);
+      animation: fillWater 0.5s ease;
+    }
+    @keyframes fillWater {
+      from {transform: scale(0.8);}
+      to {transform: scale(1);}
+    }
+    .exercise-timer {
+      font-size:2em;
+      color:#FF9740;
+      font-weight:bold;
+      text-align:center;
+      margin:14px 0;
+      text-shadow: 0 2px 8px rgba(255,151,64,0.6);
+    }
+    .mood-emoji {
+      font-size:48px;
+      margin:8px;
+      cursor:pointer;
+      transition: all .3s;
+      display:inline-block;
+    }
+    .mood-emoji:hover {
+      transform: scale(1.3) rotate(10deg);
+    }
+    .stars-display {
+      text-align:center;
+      font-size:1.4em;
+      color:#FFD700;
+      margin:12px 0;
+      text-shadow: 0 2px 8px rgba(255,215,0,0.6);
+    }
+    .food-emoji {
+      font-size:36px;
+      display:inline-block;
+      margin-right:10px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <img src="1000365989.jpeg" class="logo" alt="Talevia Logo" />
+  لعبة Talevia الصحية الذكية
+  <button id="adminBtn" title="دخول لوحة المدير">🔐 المدير</button>
+</header>
+<main>
+
+<!-- شاشة تسجيل الدخول -->
+<div id="login-section">
+  <h2 class="center">🌟 مرحباً بك في Talevia</h2>
+  <div class="input-area">
+    <label>اختر نوع المستخدم:</label>
+    <select id="userType">
+      <option value="child">👦 طفل</option>
+      <option value="parent">👨‍👩‍👦 ولي أمر</option>
+    </select>
+    <div id="child-login">
+      <label>📧 الإيميل:</label>
+      <input type="email" id="child-email" placeholder="أدخل إيميلك" autocomplete="username" />
+      <label>🔒 كلمة المرور:</label>
+      <input type="password" id="child-password" placeholder="أدخل كلمة المرور" autocomplete="current-password" />
+    </div>
+    <div id="parent-login" class="hidden">
+      <label>📧 إيميل ولي الأمر:</label>
+      <input type="email" id="parent-email" placeholder="إيميل ولي الأمر" autocomplete="username" />
+      <label>👦 إيميل الطفل:</label>
+      <input type="email" id="parent-child-email" placeholder="إيميل الطفل" />
+      <label>🔒 كلمة المرور:</label>
+      <input type="password" id="parent-password" placeholder="كلمة المرور" autocomplete="current-password" />
+    </div>
+    <button type="button" class="btn" id="loginBtn">🚀 دخول</button>
+    <button type="button" class="btn" id="regBtn">✨ تسجيل جديد</button>
+    <div class="error" id="login-error"></div>
+    <div id="waiting-approval" class="reqBox hidden">
+      ⏳ طلبك تم إرساله إلى إدارة Talevia، يرجى انتظار الموافقة!
+    </div>
+  </div>
+</div>
+
+<!-- شاشة المدير -->
+<div id="admin-section" class="hidden">
+  <h2 class="center">🔐 لوحة تحكم المدير</h2>
+  <div class="input-area">
+    <label>كلمة مرور المدير:</label>
+    <input type="password" id="admin-password" placeholder="أدخل كلمة المرور" autocomplete="current-password" />
+    <button type="button" class="btn" id="enter-admin-btn">✅ تأكيد</button>
+    <button type="button" class="btn back-btn" id="close-admin-btn">↩️ رجوع</button>
+    <div class="error" id="admin-error"></div>
+  </div>
+  <div class="adm-panel hidden" id="adm-panel-content">
+    <h3 class="center">📋 طلبات جديدة</h3>
+    <div id="adm-req-list" class="adm-list"></div>
+    <h3 class="center">👥 جميع المستخدمين</h3>
+    <div id="adm-user-list" class="adm-list"></div>
+    <button type="button" class="btn" id="adm-logout-btn">🚪 خروج</button>
+  </div>
+</div>
+
+<!-- واجهة اللعبة الرئيسية -->
+<div id="game-section" class="hidden">
+  <div class="welcome-msg center" id="welcome-msg"></div>
+  <div class="threeD-bot">
+    <span class="threeD-face" id="bot-face">😊</span>
+  </div>
+  <div id="botSay"></div>
+  
+  <div class="stars-display">
+    ⭐ النجوم: <span id="stars-count">0</span> | 🏆 النقاط: <span id="points-count">0</span>
+  </div>
+  
+  <label for="upload-photo">📷 تحميل صورة شخصية:</label>
+  <input type="file" id="upload-photo" accept="image/*" />
+  <img id="user-photo" src="" alt="صورة" class="hidden" />
+  
+  <h3 class="center">اختر نشاطك اليوم:</h3>
+  <div class="nav-icons" id="main-icons"></div>
+  
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progress-bar-fill">0%</div>
+  </div>
+  
+  <button id="logout-btn" class="btn">🚪 تسجيل خروج</button>
+</div>
+
+<!-- صفحة الطعام الصحي -->
+<div id="food-activity" class="hidden activity-page">
+  <div class="activity-header">
+    <h2>🥗 الطعام الصحي</h2>
+  </div>
+  <h3>اختر الوجبة:</h3>
+  <div id="meal-selector">
+    <div class="meal-option" data-meal="breakfast">
+      <span class="food-emoji">🌅</span>
+      <strong>الفطور</strong>
+      <span id="breakfast-status"></span>
+    </div>
+    <div class="meal-option" data-meal="lunch">
+      <span class="food-emoji">☀️</span>
+      <strong>الغداء</strong>
+      <span id="lunch-status"></span>
+    </div>
+    <div class="meal-option" data-meal="dinner">
+      <span class="food-emoji">🌙</span>
+      <strong>العشاء</strong>
+      <span id="dinner-status"></span>
+    </div>
+  </div>
+  <button class="btn back-btn" id="back-from-food">↩️ رجوع</button>
+</div>
+
+<!-- صفحة تفاصيل الوجبة -->
+<div id="meal-details" class="hidden activity-page">
+  <div class="activity-header">
+    <h2 id="meal-title"></h2>
+  </div>
+  <h3>اختر طعامك الصحي:</h3>
+  <div id="food-options"></div>
+  <button class="btn back-btn" id="back-to-meals">↩️ رجوع للوجبات</button>
+</div>
+
+<!-- صفحة شرب الماء -->
+<div id="water-activity" class="hidden activity-page">
+  <div class="activity-header">
+    <h2>💧 شرب الماء</h2>
+    <p>الهدف: 8 أكواب يومياً</p>
+  </div>
+  <div class="center" style="margin:20px 0;">
+    <div id="water-cups"></div>
+  </div>
+  <p class="center" style="color:#fff;">الأكواب المكتملة: <span id="water-count">0</span>/8</p>
+  <button class="btn back-btn" id="back-from-water">↩️ رجوع</button>
+</div>
+
+<!-- صفحة النشاط البدني -->
+<div id="exercise-activity" class="hidden activity-page">
+  <div class="activity-header">
+    <h2>🏃 النشاط البدني</h2>
+  </div>
+  <h3>اختر تمرينك:</h3>
+  <div id="exercise-list">
+    <div class="exercise-card" data-exercise="running">
+      <span class="food-emoji">🏃‍♂️</span>
+      <strong>الجري</strong>
+      <p>مدة: 15 دقيقة</p>
+    </div>
+    <div class="exercise-card" data-exercise="swimming">
+      <span class="food-emoji">🏊‍♂️</span>
+      <strong>السباحة</strong>
+      <p>مدة: 20 دقيقة</p>
+    </div>
+    <div class="exercise-card" data-exercise="yoga">
+      <span class="food-emoji">🧘</span>
+      <strong>اليوجا</strong>
+      <p>مدة: 10 دقائق</p>
+    </div>
+    <div class="exercise-card" data-exercise="cycling">
+      <span class="food-emoji">🚴</span>
+      <strong>ركوب الدراجة</strong>
+      <p>مدة: 25 دقيقة</p>
+    </div>
+  </div>
+  <button class="btn back-btn" id="back-from-exercise">↩️ رجوع</button>
+</div>
+
+<!-- صفحة تفاصيل التمرين -->
+<div id="exercise-details" class="hidden activity-page">
+  <div class="activity-header">
+    <h2 id="exercise-title"></h2>
+  </div>
+  <div class="exercise-timer" id="exercise-timer">00:00</div>
+  <div class="center">
+    <button class="btn" id="start-exercise">▶️ ابدأ</button>
+    <button class="btn" id="stop-exercise">⏸️ توقف</button>
+    <button class="btn" id="complete-exercise">✅ إنهاء</button>
+  </div>
+  <button class="btn back-btn" id="back-to-exercises">↩️ رجوع</button>
+</div>
+
+<!-- صفحة المشاعر -->
+<div id="mood-activity" class="hidden activity-page">
+  <div class="activity-header">
+    <h2>😊 كيف تشعر اليوم؟</h2>
+  </div>
+  <div class="center" style="margin:20px 0;">
+    <div class="mood-emoji" data-mood="happy">😊</div>
+    <div class="mood-emoji" data-mood="sad">😢</div>
+    <div class="mood-emoji" data-mood="angry">😠</div>
+    <div class="mood-emoji" data-mood="excited">🤩</div>
+    <div class="mood-emoji" data-mood="tired">😴</div>
+    <div class="mood-emoji" data-mood="love">😍</div>
+  </div>
+  <div class="input-area">
+    <label>اكتب عن مشاعرك:</label>
+    <input type="text" id="mood-note" placeholder="ماذا حدث اليوم؟" />
+    <button class="btn" id="save-mood">💾 حفظ</button>
+  </div>
+  <button class="btn back-btn" id="back-from-mood">↩️ رجوع</button>
+</div>
+
+<!-- صفحة النوم -->
+<div id="sleep-activity" class="hidden activity-page">
+  <div class="activity-header">
+    <h2>🌙 النوم والتفكير الإيجابي</h2>
+  </div>
+  <div class="sleep-tracker">
+    <h3>⏰ ساعات النوم الليلة الماضية:</h3>
+    <input type="number" id="sleep-hours" min="0" max="12" placeholder="عدد الساعات" 
+           style="width:100px; margin:10px auto; display:block;" />
+    <button class="btn" id="save-sleep">💾 حفظ</button>
+  </div>
+  <div class="mood-card" style="margin-top:20px;">
+    <h3>✨ التأكيدات الإيجابية</h3>
+    <p id="positive-affirmation" style="font-size:1.2em; color:#fff; text-align:center;"></p>
+    <button class="btn" id="new-affirmation">🔄 تأكيد جديد</button>
+  </div>
+  <button class="btn back-btn" id="back-from-sleep">↩️ رجوع</button>
+</div>
+
+<!-- تقرير ولي الأمر -->
+<div id="report-section" class="hidden">
+  <h3 class="center">📊 تقرير التقدم</h3>
+  <div id="weekly-report"></div>
+</div>
+
+<!-- بيانات الطفل للمدير -->
+<div id="adm-child-data-section" class="hidden">
+  <h3>👦 بيانات الطفل</h3>
+  <div class="adm-child-data" id="adm-child-data-content"></div>
+  <button type="button" class="btn back-btn" id="back-to-user-list-btn">↩️ رجوع</button>
+</div>
+
+</main>
+
+<script>
+// =============== الثوابت والبيانات ===============
+const ADMIN_PASSWORD = "talevia@0800";
+const userDBKey = "talevia-users-v2";
+const sessionKey = "talevia-session-v2";
+const requestKey = "talevia-requests-v2";
+const progressKey = "talevia-progress-v2";
+
+let usersDB = JSON.parse(localStorage.getItem(userDBKey)) || [
+  {userType:"child",email:"child1@example.com",password:"childpass",parentEmail:"parent1@example.com",
+   approved:true,points:0,stars:0,photo:"",name:"الطفل التجريبي"},
+  {userType:"parent",email:"parent1@example.com",childEmail:"child1@example.com",
+   password:"parentpass",approved:true}
+];
+
+let requestsDB = JSON.parse(localStorage.getItem(requestKey)) || [];
+let currentUser = null;
+let exerciseTimer = null;
+let exerciseSeconds = 0;
+
+// التأكيدات الإيجابية
+const affirmations = [
+  "أنا قوي وقادر على تحقيق أهدافي! 💪",
+  "أنا محبوب ومميز! ❤️",
+  "أستطيع أن أتعلم أي شيء أريده! 🌟",
+  "أنا أحب نفسي وأهتم بصحتي! 🌈",
+  "كل يوم أصبح أفضل! ✨",
+  "أنا سعيد ومبدع! 🎨",
+  "أستطيع التغلب على التحديات! 🚀",
+  "أنا صديق رائع! 🤗"
+];
+
+// خيارات الطعام لكل وجبة
+const foodOptions = {
+  breakfast: [
+    {name:"بيض مسلوق", emoji:"🥚", points:10},
+    {name:"شوفان بالفواكه", emoji:"🥣", points:10},
+    {name:"توست بالأفوكادو", emoji:"🥑", points:10},
+    {name:"زبادي بالعسل", emoji:"🍯", points:10},
+    {name:"فواكه طازجة", emoji:"🍎", points:10}
+  ],
+  lunch: [
+    {name:"سلطة خضراء", emoji:"🥗", points:10},
+    {name:"دجاج مشوي", emoji:"🍗", points:10},
+    {name:"أرز بني", emoji:"🍚", points:10},
+    {name:"سمك مشوي", emoji:"🐟", points:10},
+    {name:"خضار مطبوخة", emoji:"🥦", points:10}
+  ],
+  dinner: [
+    {name:"شوربة خضار", emoji:"🍲", points:10},
+    {name:"ساندويتش صحي", emoji:"🥪", points:10},
+    {name:"معكرونة بالخضار", emoji:"🍝", points:10},
+    {name:"سلطة فواكه", emoji:"🥗", points:10},
+    {name:"حمص بالطحينة", emoji:"🫘", points:10}
+  ]
+};
+
+// =============== حفظ واسترجاع البيانات ===============
+function saveUsersDB(){localStorage.setItem(userDBKey,JSON.stringify(usersDB));}
+function saveRequestsDB(){localStorage.setItem(requestKey,JSON.stringify(requestsDB));}
+function saveProgress(data){localStorage.setItem(progressKey,JSON.stringify(data));}
+function loadProgress(){return JSON.parse(localStorage.getItem(progressKey)) || {};}
+function saveSession(user){localStorage.setItem(sessionKey,JSON.stringify(user));}
+function loadSession(){
+  let sess=localStorage.getItem(sessionKey);
+  return sess ? JSON.parse(sess) : null;
+}
+
+// =============== العناصر ===============
+const adminBtn=document.getElementById("adminBtn");
+const adminSection=document.getElementById("admin-section");
+const admPanelContent=document.getElementById("adm-panel-content");
+const loginSection=document.getElementById("login-section");
+const gameSection=document.getElementById("game-section");
+const foodActivity=document.getElementById("food-activity");
+const mealDetails=document.getElementById("meal-details");
+const waterActivity=document.getElementById("water-activity");
+const exerciseActivity=document.getElementById("exercise-activity");
+const exerciseDetails=document.getElementById("exercise-details");
+const moodActivity=document.getElementById("mood-activity");
+const sleepActivity=document.getElementById("sleep-activity");
+const reportSection=document.getElementById("report-section");
+
+// =============== البوت ===============
+function botSetFace(emotion){
+  const faces={happy:"😊",excited:"🎉",encouraging:"💪",proud:"👏",sad:"😔",neutral:"🙂"};
+  document.getElementById("bot-face").textContent=faces[emotion]||faces.neutral;
+}
+
+function botSpeak(text,emotion="happy"){
+  botSetFace(emotion);
+  const botSay=document.getElementById("botSay");
+  botSay.textContent="";
+  let idx=0;
+  function typeWriter(){
+    if(idx<text.length){
+      botSay.textContent+=text.charAt(idx);
+      idx++;
+      setTimeout(typeWriter,30);
+    }
+  }
+  typeWriter();
+}
+
+// =============== تسجيل الدخول ===============
+document.getElementById("userType").addEventListener("change",(e)=>{
+  const val=e.target.value;
+  document.getElementById("child-login").classList.toggle("hidden",val!=="child");
+  document.getElementById("parent-login").classList.toggle("hidden",val!=="parent");
+  document.getElementById("login-error").textContent="";
+});
+
+document.getElementById("regBtn").addEventListener("click",()=>{
+  const type=document.getElementById("userType").value;
+  let email,password,name="";
+  
+  if(type==="child"){
+    email=document.getElementById("child-email").value.trim().toLowerCase();
+    password=document.getElementById("child-password").value;
+    name=email.split('@')[0];
+    
+    if(usersDB.some(u=>u.email===email)||requestsDB.some(r=>r.email===email)){
+      document.getElementById("login-error").textContent="⚠️ الإيميل موجود مسبقاً!";
+      return;
+    }
+    requestsDB.push({userType:"child",email,password,name,approved:false,points:0,stars:0});
+  }else{
+    email=document.getElementById("parent-email").value.trim().toLowerCase();
+    const childEmail=document.getElementById("parent-child-email").value.trim().toLowerCase();
+    password=document.getElementById("parent-password").value;
+    name=email.split('@')[0];
+    
+    if(usersDB.some(u=>u.email===email)||requestsDB.some(r=>r.email===email)){
+      document.getElementById("login-error").textContent="⚠️ الإيميل موجود مسبقاً!";
+      return;
+    }
+    requestsDB.push({userType:"parent",email,password,childEmail,name,approved:false});
+  }
+  
+  saveRequestsDB();
+  document.getElementById("waiting-approval").classList.remove("hidden");
+  document.getElementById("login-error").textContent="";
+});
+
+document.getElementById("loginBtn").addEventListener("click",()=>{
+  const type=document.getElementById("userType").value;
+  let email,password;
+  
+  if(type==="child"){
+    email=document.getElementById("child-email").value.trim().toLowerCase();
+    password=document.getElementById("child-password").value;
+    let user=usersDB.find(u=>u.email===email&&u.userType==="child");
+    
+    if(!user){
+      document.getElementById("login-error").textContent="⚠️ الحساب غير موجود!";
+      return;
+    }
+    if(user.password!==password){
+      document.getElementById("login-error").textContent="⚠️ كلمة المرور خاطئة!";
+      return;
+    }
+    
+    currentUser=user;
+    saveSession(currentUser);
+    showGameInterface(user);
+  }else{
+    email=document.getElementById("parent-email").value.trim().toLowerCase();
+    const childEmail=document.getElementById("parent-child-email").value.trim().toLowerCase();
+    password=document.getElementById("parent-password").value;
+    let user=usersDB.find(u=>u.email===email&&u.userType==="parent");
+    
+    if(!user||user.password!==password||user.childEmail!==childEmail){
+      document.getElementById("login-error").textContent="⚠️ بيانات خاطئة!";
+      return;
+    }
+    
+    currentUser=user;
+    saveSession(currentUser);
+    showGameInterface(user);
+    showReport();
+  }
+});
+
+document.getElementById("logout-btn").addEventListener("click",()=>{
+  currentUser=null;
+  localStorage.removeItem(sessionKey);
+  hideAllSections();
+  loginSection.classList.remove("hidden");
+});
+
+// =============== المدير ===============
+adminBtn.addEventListener("click",()=>{
+  hideAllSections();
+  adminSection.classList.remove("hidden");
+});
+
+document.getElementById("close-admin-btn").addEventListener("click",()=>{
+  hideAllSections();
+  loginSection.classList.remove("hidden");
+});
+
+document.getElementById("enter-admin-btn").addEventListener("click",()=>{
+  const pass=document.getElementById("admin-password").value;
+  if(pass!==ADMIN_PASSWORD){
+    document.getElementById("admin-error").textContent="⚠️ كلمة مرور خاطئة!";
+    return;
+  }
+  admPanelContent.classList.remove("hidden");
+  loadAdminLists();
+});
+
+document.getElementById("adm-logout-btn").addEventListener("click",()=>{
+  hideAllSections();
+  loginSection.classList.remove("hidden");
+});
+
+function loadAdminLists(){
+  // الطلبات
+  const admReqList=document.getElementById("adm-req-list");
+  admReqList.innerHTML="";
+  const reqs=requestsDB.filter(r=>!r.approved);
+  
+  if(reqs.length===0){
+    admReqList.innerHTML="<p class='center'>✅ لا توجد طلبات جديدة</p>";
+  }else{
+    reqs.forEach((r,i)=>{
+      const div=document.createElement("div");
+      div.className="adm-list-item";
+      div.innerHTML=`
+        <span class="adm-user-label">${r.name} (${r.email})</span>
+        <div class="adm-list-actions">
+          <button class="btn" onclick="approveReq(${i})">✅ موافقة</button>
+          <button class="btn adm-remove-btn" onclick="rejectReq(${i})">❌ رفض</button>
+        </div>
+      `;
+      admReqList.appendChild(div);
+    });
+  }
+  
+  // المستخدمين
+  const admUserList=document.getElementById("adm-user-list");
+  admUserList.innerHTML="";
+  usersDB.forEach((u,idx)=>{
+    const div=document.createElement("div");
+    div.className="adm-list-item";
+    div.innerHTML=`
+      <span class="adm-user-label" onclick="showChildData(${idx})">${u.name||u.email}</span>
+      <div class="adm-list-actions">
+        <button class="btn adm-view-btn" onclick="showChildData(${idx})">👁️ عرض</button>
+        <button class="btn adm-remove-btn" onclick="removeUser(${idx})">🗑️ حذف</button>
+      </div>
+    `;
+    admUserList.appendChild(div);
+  });
+}
+
+window.approveReq=function(idx){
+  const req=requestsDB[idx];
+  usersDB.push({...req,approved:true});
+  requestsDB.splice(idx,1);
+  saveUsersDB();
+  saveRequestsDB();
+  loadAdminLists();
+};
+
+window.rejectReq=function(idx){
+  requestsDB.splice(idx,1);
+  saveRequestsDB();
+  loadAdminLists();
+};
+
+window.removeUser=function(idx){
+  usersDB.splice(idx,1);
+  saveUsersDB();
+  loadAdminLists();
+};
+
+window.showChildData=function(idx){
+  const user=usersDB[idx];
+  admPanelContent.classList.add("hidden");
+  document.getElementById("adm-child-data-section").classList.remove("hidden");
+  
+  const content=document.getElementById("adm-child-data-content");
+  content.innerHTML=`
+    <p><strong>الاسم:</strong> ${user.name||user.email}</p>
+    <p><strong>الإيميل:</strong> ${user.email}</p>
+    <p><strong>النوع:</strong> ${user.userType==="child"?"طفل":"ولي أمر"}</p>
+    ${user.userType==="child"?`
+      <p><strong>النقاط:</strong> ${user.points||0}</p>
+      <p><strong>النجوم:</strong> ${user.stars||0}</p>
+      <p><strong>التقدم:</strong> ${Math.min(100,Math.floor((user.points||0)/100*100))}%</p>
+    `:""}
+  `;
+};
+
+document.getElementById("back-to-user-list-btn").addEventListener("click",()=>{
+  document.getElementById("adm-child-data-section").classList.add("hidden");
+  admPanelContent.classList.remove("hidden");
+});
+
+// =============== واجهة اللعبة ===============
+function showGameInterface(user){
+  hideAllSections();
+  gameSection.classList.remove("hidden");
+  
+  document.getElementById("welcome-msg").textContent=`مرحباً ${user.name||user.email}! 🎉`;
+  botSpeak(`أهلاً بك يا ${user.name||user.email}! أنا صديقك الذكي في رحلة الصحة! 🌟`,"excited");
+  
+  updateStats();
+  loadMainIcons();
+  
+  if(user.photo){
+    document.getElementById("user-photo").src=user.photo;
+    document.getElementById("user-photo").classList.remove("hidden");
+  }
+}
+
+function updateStats(){
+  if(!currentUser) return;
+  document.getElementById("stars-count").textContent=currentUser.stars||0;
+  document.getElementById("points-count").textContent=currentUser.points||0;
+  
+  const percent=Math.min(100,Math.floor(((currentUser.points||0)/100)*100));
+  const fill=document.getElementById("progress-bar-fill");
+  fill.style.width=percent+"%";
+  fill.textContent=percent+"%";
+}
+
+function loadMainIcons(){
+  const activities=[
+    {name:"الطعام الصحي",emoji:"🥗",id:"food"},
+    {name:"شرب الماء",emoji:"💧",id:"water"},
+    {name:"النشاط البدني",emoji:"🏃",id:"exercise"},
+    {name:"المشاعر",emoji:"😊",id:"mood"},
+    {name:"النوم",emoji:"🌙",id:"sleep"}
+  ];
+  
+  const container=document.getElementById("main-icons");
+  container.innerHTML="";
+  
+  activities.forEach(a=>{
+    const btn=document.createElement("div");
+    btn.className="icon-btn";
+    btn.textContent=a.emoji;
+    btn.title=a.name;
+    btn.onclick=()=>openActivity(a.id);
+    container.appendChild(btn);
+  });
+}
+
+function openActivity(id){
+  hideAllSections();
+  
+  switch(id){
+    case "food":
+      foodActivity.classList.remove("hidden");
+      loadMealStatus();
+      break;
+    case "water":
+      waterActivity.classList.remove("hidden");
+      loadWaterCups();
+      break;
+    case "exercise":
+      exerciseActivity.classList.remove("hidden");
+      break;
+    case "mood":
+      moodActivity.classList.remove("hidden");
+      break;
+    case "sleep":
+      sleepActivity.classList.remove("hidden");
+      loadSleepData();
+      break;
+  }
+}
+
+function hideAllSections(){
+  [loginSection,adminSection,gameSection,foodActivity,mealDetails,
+   waterActivity,exerciseActivity,exerciseDetails,moodActivity,
+   sleepActivity,reportSection,document.getElementById("adm-child-data-section"),
+   admPanelContent].forEach(el=>el.classList.add("hidden"));
+}
+
+// =============== الطعام الصحي ===============
+function loadMealStatus(){
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  const todayProgress=progress[currentUser.email]?.[today]||{};
+  
+  ["breakfast","lunch","dinner"].forEach(meal=>{
+    const status=document.getElementById(`${meal}-status`);
+    if(todayProgress[meal]){
+      status.textContent=" ✅";
+      document.querySelector(`[data-meal="${meal}"]`).classList.add("completed");
+    }else{
+      status.textContent="";
+      document.querySelector(`[data-meal="${meal}"]`).classList.remove("completed");
+    }
+  });
+}
+
+document.querySelectorAll(".meal-option").forEach(opt=>{
+  opt.addEventListener("click",function(){
+    const meal=this.dataset.meal;
+    const progress=loadProgress();
+    const today=new Date().toDateString();
+    const todayProgress=progress[currentUser.email]?.[today]||{};
+    
+    if(todayProgress[meal]){
+      botSpeak("لقد أكملت هذه الوجبة بالفعل اليوم! 😊","encouraging");
+      return;
+    }
+    
+    openMealDetails(meal);
+  });
+});
+
+function openMealDetails(meal){
+  foodActivity.classList.add("hidden");
+  mealDetails.classList.remove("hidden");
+  
+  const titles={breakfast:"🌅 الفطور",lunch:"☀️ الغداء",dinner:"🌙 العشاء"};
+  document.getElementById("meal-title").textContent=titles[meal];
+  
+  const container=document.getElementById("food-options");
+  container.innerHTML="";
+  
+  foodOptions[meal].forEach(food=>{
+    const div=document.createElement("div");
+    div.className="meal-option";
+    div.innerHTML=`
+      <span class="food-emoji">${food.emoji}</span>
+      <strong>${food.name}</strong>
+      <span style="color:#FFD700;"> +${food.points} نقاط</span>
+    `;
+    div.onclick=()=>selectFood(meal,food);
+    container.appendChild(div);
+  });
+}
+
+function selectFood(meal,food){
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  
+  if(!progress[currentUser.email]) progress[currentUser.email]={};
+  if(!progress[currentUser.email][today]) progress[currentUser.email][today]={};
+  
+  if(progress[currentUser.email][today][meal]){
+    botSpeak("لقد اخترت طعاماً لهذه الوجبة بالفعل! 🍽️","encouraging");
+    return;
+  }
+  
+  progress[currentUser.email][today][meal]=food.name;
+  saveProgress(progress);
+  
+  currentUser.points=(currentUser.points||0)+food.points;
+  currentUser.stars=(currentUser.stars||0)+1;
+  
+  const idx=usersDB.findIndex(u=>u.email===currentUser.email);
+  if(idx!==-1){
+    usersDB[idx]=currentUser;
+    saveUsersDB();
+  }
+  saveSession(currentUser);
+  
+  botSpeak(`رائع! لقد اخترت ${food.name}! حصلت على ${food.points} نقاط! 🌟`,"excited");
+  updateStats();
+  
+  setTimeout(()=>{
+    mealDetails.classList.add("hidden");
+    foodActivity.classList.remove("hidden");
+    loadMealStatus();
+  },2000);
+}
+
+document.getElementById("back-from-food").onclick=()=>{
+  foodActivity.classList.add("hidden");
+  gameSection.classList.remove("hidden");
+};
+
+document.getElementById("back-to-meals").onclick=()=>{
+  mealDetails.classList.add("hidden");
+  foodActivity.classList.remove("hidden");
+};
+
+// =============== شرب الماء ===============
+function loadWaterCups(){
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  const waterCount=(progress[currentUser.email]?.[today]?.water||0);
+  
+  const container=document.getElementById("water-cups");
+  container.innerHTML="";
+  
+  for(let i=0;i<8;i++){
+    const cup=document.createElement("div");
+    cup.className="water-cup";
+    if(i<waterCount) cup.classList.add("filled");
+    cup.onclick=()=>drinkWater(i+1);
+    container.appendChild(cup);
+  }
+  
+  document.getElementById("water-count").textContent=waterCount;
+}
+
+function drinkWater(cupNum){
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  
+  if(!progress[currentUser.email]) progress[currentUser.email]={};
+  if(!progress[currentUser.email][today]) progress[currentUser.email][today]={};
+  
+  const currentCount=progress[currentUser.email][today].water||0;
+  
+  if(cupNum>currentCount){
+    progress[currentUser.email][today].water=cupNum;
+    saveProgress(progress);
+    
+    currentUser.points=(currentUser.points||0)+2;
+    currentUser.stars=(currentUser.stars||0)+1;
+    
+    const idx=usersDB.findIndex(u=>u.email===currentUser.email);
+    if(idx!==-1){
+      usersDB[idx]=currentUser;
+      saveUsersDB();
+    }
+    saveSession(currentUser);
+    
+    botSpeak(`أحسنت! شربت كوب ماء رقم ${cupNum}! 💧`,"happy");
+    updateStats();
+    loadWaterCups();
+  }
+}
+
+document.getElementById("back-from-water").onclick=()=>{
+  waterActivity.classList.add("hidden");
+  gameSection.classList.remove("hidden");
+};
+
+// =============== النشاط البدني ===============
+document.querySelectorAll(".exercise-card").forEach(card=>{
+  card.addEventListener("click",function(){
+    const exercise=this.dataset.exercise;
+    const progress=loadProgress();
+    const today=new Date().toDateString();
+    const todayProgress=progress[currentUser.email]?.[today]||{};
+    
+    if(todayProgress[`exercise_${exercise}`]){
+      botSpeak("لقد أكملت هذا التمرين اليوم! جرب تمريناً آخر! 💪","encouraging");
+      return;
+    }
+    
+    openExerciseDetails(exercise,this.querySelector("strong").textContent);
+  });
+});
+
+function openExerciseDetails(exercise,title){
+  exerciseActivity.classList.add("hidden");
+  exerciseDetails.classList.remove("hidden");
+  
+  document.getElementById("exercise-title").textContent=title;
+  document.getElementById("exercise-timer").textContent="00:00";
+  exerciseSeconds=0;
+  
+  document.getElementById("start-exercise").onclick=()=>startExercise();
+  document.getElementById("stop-exercise").onclick=()=>stopExercise();
+  document.getElementById("complete-exercise").onclick=()=>completeExercise(exercise);
+}
+
+function startExercise(){
+  if(exerciseTimer) return;
+  
+  exerciseTimer=setInterval(()=>{
+    exerciseSeconds++;
+    const mins=Math.floor(exerciseSeconds/60);
+    const secs=exerciseSeconds%60;
+    document.getElementById("exercise-timer").textContent=
+      `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  },1000);
+  
+  botSpeak("رائع! استمر في التمرين! 💪","encouraging");
+}
+
+function stopExercise(){
+  if(exerciseTimer){
+    clearInterval(exerciseTimer);
+    exerciseTimer=null;
+  }
+}
+
+function completeExercise(exercise){
+  stopExercise();
+  
+  if(exerciseSeconds<60){
+    botSpeak("حاول التمرين لمدة دقيقة على الأقل! 😊","encouraging");
+    return;
+  }
+  
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  
+  if(!progress[currentUser.email]) progress[currentUser.email]={};
+  if(!progress[currentUser.email][today]) progress[currentUser.email][today]={};
+  
+  progress[currentUser.email][today][`exercise_${exercise}`]=true;
+  saveProgress(progress);
+  
+  const points=Math.floor(exerciseSeconds/60)*5;
+  currentUser.points=(currentUser.points||0)+points;
+  currentUser.stars=(currentUser.stars||0)+2;
+  
+  const idx=usersDB.findIndex(u=>u.email===currentUser.email);
+  if(idx!==-1){
+    usersDB[idx]=currentUser;
+    saveUsersDB();
+  }
+  saveSession(currentUser);
+  
+  botSpeak(`ممتاز! أكملت ${Math.floor(exerciseSeconds/60)} دقيقة! حصلت على ${points} نقطة! 🏆`,"proud");
+  updateStats();
+  
+  setTimeout(()=>{
+    exerciseDetails.classList.add("hidden");
+    exerciseActivity.classList.remove("hidden");
+  },2000);
+}
+
+document.getElementById("back-from-exercise").onclick=()=>{
+  exerciseActivity.classList.add("hidden");
+  gameSection.classList.remove("hidden");
+};
+
+document.getElementById("back-to-exercises").onclick=()=>{
+  stopExercise();
+  exerciseDetails.classList.add("hidden");
+  exerciseActivity.classList.remove("hidden");
+};
+
+// =============== المشاعر ===============
+document.querySelectorAll(".mood-emoji").forEach(emoji=>{
+  emoji.addEventListener("click",function(){
+    const mood=this.dataset.mood;
+    document.getElementById("mood-note").value=`شعرت بـ ${mood} اليوم!`;
+  });
+});
+
+document.getElementById("save-mood").onclick=()=>{
+  const note=document.getElementById("mood-note").value;
+  if(!note){
+    botSpeak("اكتب شيئاً عن مشاعرك أولاً! 😊","encouraging");
+    return;
+  }
+  
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  
+  if(!progress[currentUser.email]) progress[currentUser.email]={};
+  if(!progress[currentUser.email][today]) progress[currentUser.email][today]={};
+  
+  if(progress[currentUser.email][today].mood){
+    botSpeak("لقد سجلت مشاعرك اليوم بالفعل! 😊","happy");
+    return;
+  }
+  
+  progress[currentUser.email][today].mood=note;
+  saveProgress(progress);
+  
+  currentUser.points=(currentUser.points||0)+5;
+  currentUser.stars=(currentUser.stars||0)+1;
+  
+  const idx=usersDB.findIndex(u=>u.email===currentUser.email);
+  if(idx!==-1){
+    usersDB[idx]=currentUser;
+    saveUsersDB();
+  }
+  saveSession(currentUser);
+  
+  botSpeak("شكراً على مشاركة مشاعرك! أنت رائع! ❤️","happy");
+  updateStats();
+  document.getElementById("mood-note").value="";
+};
+
+document.getElementById("back-from-mood").onclick=()=>{
+  moodActivity.classList.add("hidden");
+  gameSection.classList.remove("hidden");
+};
+
+// =============== النوم ===============
+function loadSleepData(){
+  document.getElementById("positive-affirmation").textContent=
+    affirmations[Math.floor(Math.random()*affirmations.length)];
+}
+
+document.getElementById("save-sleep").onclick=()=>{
+  const hours=parseInt(document.getElementById("sleep-hours").value);
+  
+  if(!hours||hours<1){
+    botSpeak("أدخل عدد ساعات النوم! 🌙","encouraging");
+    return;
+  }
+  
+  const progress=loadProgress();
+  const today=new Date().toDateString();
+  
+  if(!progress[currentUser.email]) progress[currentUser.email]={};
+  if(!progress[currentUser.email][today]) progress[currentUser.email][today]={};
+  
+  if(progress[currentUser.email][today].sleep){
+    botSpeak("لقد سجلت نومك اليوم بالفعل! 😴","happy");
+    return;
+  }
+  
+  progress[currentUser.email][today].sleep=hours;
+  saveProgress(progress);
+  
+  let points=hours>=8?15:hours>=6?10:5;
+  currentUser.points=(currentUser.points||0)+points;
+  currentUser.stars=(currentUser.stars||0)+1;
+  
+  const idx=usersDB.findIndex(u=>u.email===currentUser.email);
+  if(idx!==-1){
+    usersDB[idx]=currentUser;
+    saveUsersDB();
+  }
+  saveSession(currentUser);
+  
+  botSpeak(hours>=8?
+    "ممتاز! نمت بشكل كافٍ! 🌟":"حاول النوم 8 ساعات للحصول على نقاط أكثر! 😊","happy");
+  updateStats();
+  document.getElementById("sleep-hours").value="";
+};
+
+document.getElementById("new-affirmation").onclick=()=>{
+  document.getElementById("positive-affirmation").textContent=
+    affirmations[Math.floor(Math.random()*affirmations.length)];
+};
+
+document.getElementById("back-from-sleep").onclick=()=>{
+  sleepActivity.classList.add("hidden");
+  gameSection.classList.remove("hidden");
+};
+
+// =============== رفع الصورة ===============
+document.getElementById("upload-photo").addEventListener("change",function(){
+  const file=this.files[0];
+  if(!file) return;
+  
+  const reader=new FileReader();
+  reader.onload=e=>{
+    document.getElementById("user-photo").src=e.target.result;
+    document.getElementById("user-photo").classList.remove("hidden");
+    
+    currentUser.photo=e.target.result;
+    const idx=usersDB.findIndex(u=>u.email===currentUser.email);
+    if(idx!==-1){
+      usersDB[idx].photo=currentUser.photo;
+      saveUsersDB();
+    }
+    saveSession(currentUser);
+  };
+  reader.readAsDataURL(file);
+});
+
+// =============== تقرير ولي الأمر ===============
+function showReport(){
+  if(currentUser.userType!=="parent") return;
+  
+  reportSection.classList.remove("hidden");
+  const child=usersDB.find(u=>u.email===currentUser.childEmail&&u.userType==="child");
+  
+  if(!child){
+    document.getElementById("weekly-report").innerHTML="لا توجد بيانات للطفل.";
+    return;
+  }
+  
+  document.getElementById("weekly-report").innerHTML=`
+    <p><strong>اسم الطفل:</strong> ${child.name||child.email}</p>
+    <p><strong>النقاط:</strong> ${child.points||0} 🏆</p>
+    <p><strong>النجوم:</strong> ${child.stars||0} ⭐</p>
+    <p><strong>التقدم:</strong> ${Math.min(100,Math.floor((child.points||0)))}%</p>
+    <p style="color:#51cf66;">استمر في دعم طفلك! ❤️</p>
+  `;
+}
+
+// =============== بدء التطبيق ===============
+window.addEventListener("load",()=>{
+  const savedUser=loadSession();
+  if(savedUser){
+    currentUser=savedUser;
+    // تحديث من قاعدة البيانات
+    const idx=usersDB.findIndex(u=>u.email===savedUser.email&&u.userType===savedUser.userType);
+    if(idx!==-1) currentUser=usersDB[idx];
+    showGameInterface(currentUser);
+    if(currentUser.userType==="parent") showReport();
+  }
+});
+</script>
+</body>
+</html>
